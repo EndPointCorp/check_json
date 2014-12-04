@@ -8,7 +8,7 @@ use LWP::UserAgent;
 use JSON 'decode_json';
 
 my $plugin_name = "Nagios check_http_json";
-my $VERSION     = "1.02";
+my $VERSION     = "1.03";
 
 # getopt module config
 $Getopt::Std::STANDARD_HELP_VERSION = 1;
@@ -68,7 +68,7 @@ eval {
                     my $have ;
                     if ( defined $json_response->{products}{$key}{now}{$attr} ) {
                         $have = $json_response->{products}{$key}{now}{$attr};
-                    else {
+                    } else {
                         $have = '';
                     }
                     my $expect = $attr_check{$key}{$attr};
