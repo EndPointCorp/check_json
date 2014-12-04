@@ -2,12 +2,13 @@
 
 use warnings;
 use strict;
+use 5.010;
 use Getopt::Std;
 use LWP::UserAgent;
 use JSON 'decode_json';
 
 my $plugin_name = "Nagios check_http_json";
-my $VERSION     = "1.01";
+my $VERSION     = "1.02";
 
 # getopt module config
 $Getopt::Std::STANDARD_HELP_VERSION = 1;
@@ -64,7 +65,12 @@ eval {
 
             for my $key ( sort keys %attr_check ) {
                 for my $attr ( sort keys %{ $attr_check{$key} } ) {
-                    my $have   = $json_response->{products}{$key}{now}{$attr};
+                    my $have ;
+                    if ( defined $json_response->{products}{$key}{now}{$attr} ) {
+                        $have = $json_response->{products}{$key}{now}{$attr};
+                    else {
+                        $have = '';
+                    }
                     my $expect = $attr_check{$key}{$attr};
                     push @errors,
 "For key $key, attribute $attr, expected '$expect', but got '$have'"
@@ -115,6 +121,8 @@ sub VERSION_MESSAGE {
     print <<EOVM
 $plugin_name v. $VERSION
 Copyright 2012-2014, End Point, http://www.endpoint.com - Licensed under GPLv2
+
+Script repo URL: https://github.com/EndPointCorp/check_json
 
 Authors:
 v1.0 - Brian Buchalter 
