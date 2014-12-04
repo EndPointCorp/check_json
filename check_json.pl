@@ -8,7 +8,7 @@ use LWP::UserAgent;
 use JSON 'decode_json';
 
 my $plugin_name = "Nagios check_http_json";
-my $VERSION     = "1.03";
+my $VERSION     = "1.14";
 
 # getopt module config
 $Getopt::Std::STANDARD_HELP_VERSION = 1;
@@ -51,7 +51,7 @@ my $json_response;
 eval {
 
     $json_response = decode_json( $response->content );
-    print "JSON repsonse decoded successfully.";
+    print "JSON response decoded successfully.";
 
     $status = EXIT_OK;
 
@@ -66,8 +66,8 @@ eval {
             for my $key ( sort keys %attr_check ) {
                 for my $attr ( sort keys %{ $attr_check{$key} } ) {
                     my $have ;
-                    if ( defined $json_response->{products}{$key}{now}{$attr} ) {
-                        $have = $json_response->{products}{$key}{now}{$attr};
+                    if ( defined $json_response->{products}{USD}{$key}{now}{$attr} ) {
+                        $have = $json_response->{products}{USD}{$key}{now}{$attr};
                     } else {
                         $have = '';
                     }
